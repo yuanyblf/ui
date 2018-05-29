@@ -1,9 +1,7 @@
-<!-- <nav role="navigation" id="js-responsive-nav"> -->
-  <!-- <a class="nav-logo logo-{{app.mode}} btn bg-transparent"><span class="sr-only">{{settings.appName}}</span></a> -->
-
   <ul class="app-menu" id="js-responsive-nav">
+
     {{page-header-environment-menu pageScope=pageScope}}
-    
+
     {{#each navTree as |item|}}
       {{#if item.submenu.length}}
 
@@ -87,54 +85,3 @@
       {{/if}}
     {{/each}}
   </ul>
-
-  <!-- {{#hover-dropdown
-    tagName="ul"
-    class="nav-user"
-    horizontalPosition="right"
-    delay=250
-    as |dd|
-  }}
-    {{!-- <ul class="nav-user"> --}}
-      {{#dd.trigger
-        class="btn"
-        ariaLabel=(t 'nav.user.label' username=session.user)
-      }}
-        {{#if accessEnabled}}
-          {{identity-avatar link=false identity=access.principal}}
-        {{else}}
-          <div class="gh-avatar">
-            <div class="gh-placeholder">
-              <i class="icon icon-user"></i>
-            </div>
-          </div>
-        {{/if}}
-        <span class="sr-only">{{t 'nav.srToggleDropdown'}}</span>
-        <i class="icon icon-chevron-down"></i>
-      {{/dd.trigger}}
-
-      {{#dd.content
-           class="text-right"
-           tagName="ul"
-      }}
-        {{#if accessEnabled}}
-          <li role="presentation" class="user-auth">
-            {{identity-block principal=access.principal}}
-          </li>
-        {{/if}}
-
-        {{#if isCaas}}
-          <li>{{#link-to "global-admin.clusters"}}{{t 'nav.environment.manage'}}{{/link-to}}</li>
-        {{/if}}
-
-        <li role="separator" class="divider"></li>
-        <li>{{#link-to "authenticated.apikeys"}}{{t 'nav.api.link'}} <i class="icon icon-key icon-fw"/>{{/link-to}}</li>
-        <li>{{#link-to "authenticated.node-templates"}}{{t 'nav.nodeTemplates.link'}} <i class="icon icon-host icon-fw"/>{{/link-to}}</li>
-        <li role="separator" class="divider"></li>
-        <li>{{#link-to "authenticated.prefs"}}{{t 'nav.userPreferences.link'}} <i class="icon icon-gear icon-fw"/>{{/link-to}}</li>
-        <li role="separator" class="divider"></li>
-        <li>{{#link-to "logout" class="user-logout"}}{{t 'nav.user.logout'}} <i class="icon icon-logout icon-fw"/>{{/link-to}}</li>
-      {{/dd.content}}
-      {{!-- </ul> --}}
-  {{/hover-dropdown}} -->
-<!-- </nav> -->
