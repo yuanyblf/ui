@@ -36,6 +36,7 @@ Router.map(function() {
   this.route('update-critical-settings', {path: '/update-setting'});
 
   this.route('authenticated', {path: '/'}, function() {
+    console.log("主页。。。。。。。。。。。。");
     // Global
     this.mount('global-admin', { path: '/g', resetNamespace: true});
     this.route('dummy-dev', {path: '/dev'});

@@ -1,0 +1,140 @@
+<!-- <nav role="navigation" id="js-responsive-nav"> -->
+  <!-- <a class="nav-logo logo-{{app.mode}} btn bg-transparent"><span class="sr-only">{{settings.appName}}</span></a> -->
+
+  <ul class="app-menu" id="js-responsive-nav">
+    {{page-header-environment-menu pageScope=pageScope}}
+    
+    {{#each navTree as |item|}}
+      {{#if item.submenu.length}}
+
+        {{#hover-dropdown
+          tagName="li"
+          class="nav-item"
+          as |dd|
+        }}
+          {{#dd.trigger}}
+            {{#if (or (not item.resource) (rbac-allows resource=item.resource scope=item.resourceScope))}}
+              {{#if item.route}}
+                <li class="treeview">
+                  <a class="app-menu__item" href="#" data-toggle="treeview">
+                    <i class="app-menu__icon fa fa-laptop"></i>
+                    <span class="app-menu__label">{{maybe-t item.localizedLabel item.label}}</span>
+                    <i class="treeview-indicator fa fa-angle-right"></i>
+                  </a>
+                  <ul class="treeview-menu">
+                      {{#each item.submenu as |subitem|}}
+                        {{#if subitem.route}}
+                          {{#if (or (not subitem.resource) (rbac-allows resource=subitem.resource scope=subitem.resourceScope))}}
+                            <li>
+                              {{#link-to-as-attrs
+                                subitem.route
+                                models=subitem.ctx
+                                qp=subitem.qp
+                                activeParent="LI"
+                                class="treeview-item"
+                              }}
+                                <i class="app-menu__icon fa fa-pie-chart"></i>
+                                <i class="icon fa fa-circle-o"></i>
+                                {{maybe-t subitem.localizedLabel subitem.label}}
+                              {{/link-to-as-attrs}}
+                            </li>
+                          {{/if}}
+                        {{else if subitem.divider}}
+                          <li class="divider"></li>
+                        {{else}}
+                          {{! Just a label }}
+                          <li class="dropdown-header">
+                            <i class="{{subitem.icon}}"/> {{maybe-t subitem.localizedLabel subitem.label}}444
+                          </li>
+                        {{/if}}
+                      {{/each}}
+                  </ul>
+                </li>
+              {{else}}
+                <a role="button" aria-haspopup="true" aria-label={{maybe-t item.localizedLabel item.label}}>
+                  {{maybe-t item.localizedLabel item.label}}22222
+                  <span class="icon icon-chevron-down"/>
+                </a>
+              {{/if}}
+            {{/if}}
+          {{/dd.trigger}}
+
+
+        {{/hover-dropdown}}
+
+      {{else if item.route}}
+
+        {{#if (or (not item.resource) (rbac-allows resource=item.resource scope=item.resourceScope))}}
+          {{! No submenu }}
+
+          <li>
+            {{#link-to-as-attrs
+              item.route
+              models=item.ctx
+              qp=item.qp
+              activeParent="LI"
+              currentWhen=item.currentWhen
+              class="app-menu__item"
+            }}
+              <i class="app-menu__icon fa fa-pie-chart"></i>
+              {{maybe-t item.localizedLabel item.label}}
+            {{/link-to-as-attrs}}
+          </li>
+        {{/if}}
+
+      {{else}}
+
+      {{/if}}
+    {{/each}}
+  </ul>
+
+  <!-- {{#hover-dropdown
+    tagName="ul"
+    class="nav-user"
+    horizontalPosition="right"
+    delay=250
+    as |dd|
+  }}
+    {{!-- <ul class="nav-user"> --}}
+      {{#dd.trigger
+        class="btn"
+        ariaLabel=(t 'nav.user.label' username=session.user)
+      }}
+        {{#if accessEnabled}}
+          {{identity-avatar link=false identity=access.principal}}
+        {{else}}
+          <div class="gh-avatar">
+            <div class="gh-placeholder">
+              <i class="icon icon-user"></i>
+            </div>
+          </div>
+        {{/if}}
+        <span class="sr-only">{{t 'nav.srToggleDropdown'}}</span>
+        <i class="icon icon-chevron-down"></i>
+      {{/dd.trigger}}
+
+      {{#dd.content
+           class="text-right"
+           tagName="ul"
+      }}
+        {{#if accessEnabled}}
+          <li role="presentation" class="user-auth">
+            {{identity-block principal=access.principal}}
+          </li>
+        {{/if}}
+
+        {{#if isCaas}}
+          <li>{{#link-to "global-admin.clusters"}}{{t 'nav.environment.manage'}}{{/link-to}}</li>
+        {{/if}}
+
+        <li role="separator" class="divider"></li>
+        <li>{{#link-to "authenticated.apikeys"}}{{t 'nav.api.link'}} <i class="icon icon-key icon-fw"/>{{/link-to}}</li>
+        <li>{{#link-to "authenticated.node-templates"}}{{t 'nav.nodeTemplates.link'}} <i class="icon icon-host icon-fw"/>{{/link-to}}</li>
+        <li role="separator" class="divider"></li>
+        <li>{{#link-to "authenticated.prefs"}}{{t 'nav.userPreferences.link'}} <i class="icon icon-gear icon-fw"/>{{/link-to}}</li>
+        <li role="separator" class="divider"></li>
+        <li>{{#link-to "logout" class="user-logout"}}{{t 'nav.user.logout'}} <i class="icon icon-logout icon-fw"/>{{/link-to}}</li>
+      {{/dd.content}}
+      {{!-- </ul> --}}
+  {{/hover-dropdown}} -->
+<!-- </nav> -->
