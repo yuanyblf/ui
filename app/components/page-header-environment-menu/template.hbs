@@ -8,18 +8,22 @@
   }}
     <li class="treeview">
         <a class="app-menu__item" href="#" data-toggle="treeview">
-          {{#if (eq pageScope "project")}}
-              {{project.cluster.displayName}}
-              {{project.displayName}}
-          {{else if (eq pageScope "cluster")}}
-              {{cluster.displayName}}
-          {{else if (eq pageScope "clusters")}}
-              {{t 'nav.environment.manage'}}
-          {{else if (eq pageScope "global")}}
-              {{t 'nav.admin.tab'}}
-          {{else}}
-              {{pageScope}}
-          {{/if}}
+          <i class="app-menu__icon fa fa-laptop"></i>
+          <span class="app-menu__label">
+            {{#if (eq pageScope "project")}}
+                {{project.cluster.displayName}}
+                {{project.displayName}}
+            {{else if (eq pageScope "cluster")}}
+                {{cluster.displayName}}
+            {{else if (eq pageScope "clusters")}}
+                {{t 'nav.environment.manage'}}
+            {{else if (eq pageScope "global")}}
+                {{t 'nav.admin.tab'}}
+            {{else}}
+                {{pageScope}}
+            {{/if}}
+          </span>
+          <i class="treeview-indicator fa fa-angle-right"></i>
         </a>
 
         <ul class="treeview-menu">

@@ -56,6 +56,7 @@ $accent                   : $light-grey !default;
 /// @type Length
 $max-width                : 1280px !default;
 $min-width                : 75% !default;
+$min-width-upd            : 100%;
 
 /// Breakpoints map
 /// @prop {String} keys - Keys are identifiers mapped to a given length

@@ -46,32 +46,46 @@ export default Component.extend({
   dropdownSelector: '.navbar .dropdown',
 
   stacks:           null,
+  didInsertElement() {
+    // console.log("didInsertElement 执行了。。。。。。");
+    // var treeviewMenu = $('.app-menu');
+  	// // Toggle Sidebar
+  	// $('[data-toggle="sidebar"]').click(function(event) {
+    //   event.preventDefault();
+  	// 	$('.app').toggleClass('sidenav-toggled');
+  	// });
+    //
+  	// // Activate sidebar treeview toggle
+  	// $("[data-toggle='treeview']").click(function(event) {
+  	// 	event.preventDefault();
+  	// 	if(!$(this).parent().hasClass('is-expanded')) {
+  	// 		treeviewMenu.find("[data-toggle='treeview']").parent().removeClass('is-expanded');
+  	// 	}
+  	// 	$(this).parent().toggleClass('is-expanded');
+  	// });
+    //
+  	// // Set initial active toggle
+  	// $("[data-toggle='treeview.'].is-expanded").parent().toggleClass('is-expanded');
+    // // $("[data-toggle='tooltip']").tooltip();
+    //
+    // $("#dropdown_user").click(function(){
+    //   $(this).toggleClass('show');
+    //   $("#dropdown-menu-user").toggleClass('show');
+    // })
 
+  },
+  didRender(){
+    console.log("didUpdateAttrs zhixingle....");
+    $(".treeview").click(function(){
+      $(this).toggleClass('is-expanded');
+    })
+  },
   willRender() {
-    var treeviewMenu = $('.app-menu');
-  	// Toggle Sidebar
-  	$('[data-toggle="sidebar"]').click(function(event) {
-      event.preventDefault();
-  		$('.app').toggleClass('sidenav-toggled');
-  	});
-
-  	// Activate sidebar treeview toggle
-  	$("[data-toggle='treeview']").click(function(event) {
-  		event.preventDefault();
-  		if(!$(this).parent().hasClass('is-expanded')) {
-  			treeviewMenu.find("[data-toggle='treeview']").parent().removeClass('is-expanded');
-  		}
-  		$(this).parent().toggleClass('is-expanded');
-  	});
-
-  	// Set initial active toggle
-  	$("[data-toggle='treeview.'].is-expanded").parent().toggleClass('is-expanded');
-
-    // if ($('BODY').hasClass('touch') && $('header > nav').hasClass('nav-open')) {// eslint-disable-line
-    //   run.later(() => {
-    //     $('header > nav').removeClass('nav-open');// eslint-disable-line
-    //   });
-    // }
+    if ($('BODY').hasClass('touch') && $('header > nav').hasClass('nav-open')) {// eslint-disable-line
+      run.later(() => {
+        $('header > nav').removeClass('nav-open');// eslint-disable-line
+      });
+    }
   },
   init() {
     this._super(...arguments);

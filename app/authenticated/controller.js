@@ -33,6 +33,5 @@ export default Controller.extend({
 
   hasHosts: computed('model.hosts.length', function() {
     return (this.get('model.hosts.length') > 0);
-  }),
-
+  })
 });
