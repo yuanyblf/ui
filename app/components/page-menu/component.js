@@ -48,39 +48,64 @@ export default Component.extend({
   stacks:           null,
   didInsertElement() {
     // console.log("didInsertElement 执行了。。。。。。");
-    // var treeviewMenu = $('.app-menu');
-  	// // Toggle Sidebar
-  	// $('[data-toggle="sidebar"]').click(function(event) {
-    //   event.preventDefault();
-  	// 	$('.app').toggleClass('sidenav-toggled');
-  	// });
+
+    // $(".treeview").on('click',function(){
+    //   console.log("处理事件2222。。");
+    //   if ($(this).hasClass('is-expanded')) {
+    //     console.log('removeClass');
+    //     $(this).removeClass('is-expanded');
+    //   }else {
+    //     console.log('addClass');
+    //     $(this).addClass('is-expanded');
+    //   }
     //
-  	// // Activate sidebar treeview toggle
-  	// $("[data-toggle='treeview']").click(function(event) {
-  	// 	event.preventDefault();
-  	// 	if(!$(this).parent().hasClass('is-expanded')) {
-  	// 		treeviewMenu.find("[data-toggle='treeview']").parent().removeClass('is-expanded');
-  	// 	}
-  	// 	$(this).parent().toggleClass('is-expanded');
-  	// });
-    //
-  	// // Set initial active toggle
-  	// $("[data-toggle='treeview.'].is-expanded").parent().toggleClass('is-expanded');
-    // // $("[data-toggle='tooltip']").tooltip();
-    //
-    // $("#dropdown_user").click(function(){
-    //   $(this).toggleClass('show');
-    //   $("#dropdown-menu-user").toggleClass('show');
     // })
 
   },
-  didRender(){
-    console.log("didUpdateAttrs zhixingle....");
-    $(".treeview").click(function(){
-      $(this).toggleClass('is-expanded');
-    })
+  didUpdateAttrs(){
+    // $(".treeview").click(function(){
+    //   console.log("处理事件2222。。");
+    //   if ($(this).hasClass('is-expanded')) {
+    //     console.log('removeClass');
+    //     $(this).removeClass('is-expanded');
+    //   }else {
+    //     console.log('addClass');
+    //     $(this).addClass('is-expanded');
+    //   }
+    //
+    // })
+
+    // console.log("didUpdateAttrs执行了。。。");
+    // $('.treeview').unbind();
+    // $(".treeview").on('click',function(){
+    //   console.log("处理事件2222。。");
+    //   if ($(this).hasClass('is-expanded')) {
+    //     console.log('removeClass');
+    //     $(this).removeClass('is-expanded');
+    //   }else {
+    //     console.log('addClass');
+    //     $(this).addClass('is-expanded');
+    //   }
+    //
+    // })
   },
   willRender() {
+    // console.log('willRender.............................');
+    $('.treeview').unbind();
+
+    $(".treeview").on('click',function(){
+      // console.log("处理事件2222。。");
+      if ($(this).hasClass('is-expanded')) {
+        console.log('removeClass');
+        $(this).removeClass('is-expanded');
+      }else {
+        console.log('addClass');
+        $(this).addClass('is-expanded');
+      }
+
+    })
+
+
     if ($('BODY').hasClass('touch') && $('header > nav').hasClass('nav-open')) {// eslint-disable-line
       run.later(() => {
         $('header > nav').removeClass('nav-open');// eslint-disable-line
