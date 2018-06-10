@@ -47,62 +47,27 @@ export default Component.extend({
 
   stacks:           null,
   didInsertElement() {
-    // console.log("didInsertElement 执行了。。。。。。");
-
-    // $(".treeview").on('click',function(){
-    //   console.log("处理事件2222。。");
-    //   if ($(this).hasClass('is-expanded')) {
-    //     console.log('removeClass');
-    //     $(this).removeClass('is-expanded');
-    //   }else {
-    //     console.log('addClass');
-    //     $(this).addClass('is-expanded');
-    //   }
-    //
-    // })
 
   },
   didUpdateAttrs(){
-    // $(".treeview").click(function(){
-    //   console.log("处理事件2222。。");
-    //   if ($(this).hasClass('is-expanded')) {
-    //     console.log('removeClass');
-    //     $(this).removeClass('is-expanded');
-    //   }else {
-    //     console.log('addClass');
-    //     $(this).addClass('is-expanded');
-    //   }
-    //
-    // })
 
-    // console.log("didUpdateAttrs执行了。。。");
-    // $('.treeview').unbind();
-    // $(".treeview").on('click',function(){
-    //   console.log("处理事件2222。。");
-    //   if ($(this).hasClass('is-expanded')) {
-    //     console.log('removeClass');
-    //     $(this).removeClass('is-expanded');
-    //   }else {
-    //     console.log('addClass');
-    //     $(this).addClass('is-expanded');
-    //   }
-    //
-    // })
   },
   willRender() {
-    // console.log('willRender.............................');
+
     $('.treeview').unbind();
 
-    $(".treeview").on('click',function(){
-      // console.log("处理事件2222。。");
-      if ($(this).hasClass('is-expanded')) {
-        console.log('removeClass');
-        $(this).removeClass('is-expanded');
-      }else {
-        console.log('addClass');
-        $(this).addClass('is-expanded');
+    $(".treeview").on('click',function(event){
+      // event.stopPropagation();
+      console.log(event.target.nodeName);
+      if(event.target.nodeName != 'A'){
+        if ($(this).hasClass('is-expanded')) {
+          console.log('removeClass');
+          $(this).removeClass('is-expanded');
+        }else {
+          console.log('addClass');
+          $(this).addClass('is-expanded');
+        }
       }
-
     })
 
 
