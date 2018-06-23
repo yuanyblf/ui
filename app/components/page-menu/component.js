@@ -7,6 +7,7 @@ import layout from './template';
 import C from 'shared/utils/constants';
 import { get as getTree } from 'shared/utils/navigation-tree';
 import { run } from '@ember/runloop';
+import $ from 'jquery';
 
 function fnOrValue(val, ctx) {
   if ( typeof val === 'function' )
@@ -53,13 +54,18 @@ export default Component.extend({
 
   },
   willRender() {
+    if ($('BODY').hasClass('touch') && $('header > nav').hasClass('nav-open')) {// eslint-disable-line
+      run.later(() => {
+        $('header > nav').removeClass('nav-open');// eslint-disable-line
+      });
+    }
 
     $('.treeview').unbind();
 
     $(".treeview").on('click',function(event){
       // event.stopPropagation();
       console.log(event.target.nodeName);
-      if(event.target.nodeName != 'A'){
+      if(event.target.nodeName !== 'A'){
         if ($(this).hasClass('is-expanded')) {
           console.log('removeClass');
           $(this).removeClass('is-expanded');
@@ -69,13 +75,6 @@ export default Component.extend({
         }
       }
     })
-
-
-    if ($('BODY').hasClass('touch') && $('header > nav').hasClass('nav-open')) {// eslint-disable-line
-      run.later(() => {
-        $('header > nav').removeClass('nav-open');// eslint-disable-line
-      });
-    }
   },
   init() {
     this._super(...arguments);
