@@ -30,11 +30,7 @@
             {{#dd.trigger}}
 
               {{#each byCluster as |entry idx|}}
-
-                {{#if (gt idx 0)}}
-                  <li role="presentation" class="divider">777777</li>
-                {{/if}}
-
+              
                 <li>
                   {{#link-to 'authenticated.cluster' entry.cluster.id class="treeview-item"}}
                     <i class="icon icon-cluster icon-fw"></i>
