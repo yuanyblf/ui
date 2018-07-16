@@ -3,11 +3,11 @@ loggingPage:
     experimental: Experimental
     tips:
       caseA: Logging is disabled in the current {pageScope}.
-      caseB: The current logging target is <code class="text-capitalize">{currentTarget}</code>, Click the save buttom below will disable logging in current {pageScope}.
+      caseB: The current logging target is <code class="text-capitalize">{currentTarget}</code>, Click the Save button below will disable logging in current {pageScope}.
       caseC: The current logging target is <code class="text-capitalize">{currentTarget}</code>,
-      caseD: click the save buttom below to set <span class="text-info text-capitalize">{targetType}</span> as the logging target.
-      caseE: click the save buttom below to update the <span class="text-info text-capitalize">{targetType}</span> configuration.
-      caseF: No logging target, click the save buttom below to set <code class="text-capitalize">{targetType}</code> as the logging target.
+      caseD: click the Save button below to set <span class="text-info text-capitalize">{targetType}</span> as the logging target.
+      caseE: click the Save button below to update the <span class="text-info text-capitalize">{targetType}</span> configuration.
+      caseF: No logging target, click the Save button below to set <code class="text-capitalize">{targetType}</code> as the logging target.
   targetTypes:
     embedded: Embedded
     elasticsearch: Elasticsearch
@@ -85,6 +85,8 @@ loggingPage:
   elasticsearch:
     header: Elasticsearch Configuration
     endpointHelpText: Copy your endpoint from Elastic Cloud, or input the reachable endpoint of your self-hosted Elacticsearch.
+    endpointProtocolError: Endpoint should start with "http://" or "https://".
+    endpointHostError: Please enter host name or domain name.
     xpack:
       header: X-Pack Security
       headerOptional: (optional)
@@ -109,6 +111,9 @@ loggingPage:
     source: Source
     sourcePlaceholder: e.g. fluentd
     sourceHelpText: 'A default field that identifies the source of an event, that is, where the event originated. <a href="https://docs.splunk.com/Splexicon:Source" target="_blank">Detail</a>'
+    index: Index
+    indexPlaceholder: e.g. main
+    indexHelpText: 'The index you specify here must within the list of this token’s allowed indexes. <a href="https://docs.splunk.com/Splexicon:Index" target="_blank">Detail</a>'
   kafka:
     header: Kafka Configuration
     endpointType: Endpoint Type
@@ -138,3 +143,23 @@ loggingPage:
       notice: Notice
       info: Info
       debug: Debug
+  ssl:
+    sslHeader: SSL Configuration
+    certificate:
+      label: Trusted Server Certificate
+    clientKey:
+      label: Client Private Key
+    clientCert:
+      label: Client Certificate
+    clientKeyPass:
+      label: Client Key Password
+      password:
+        placeholder: Your Client Key Password.
+    verify:
+      label: SSL Verify
+      enabled: Enabled - Input trusted server certificate
+      disabled: Disabled
+  dockerRootDir:
+    header: Docker Configuration
+    label: Docker Root Dictionary
+    placeholder: Enter docker root dictionary, default value is {dir}

@@ -5,26 +5,27 @@ languageContribute: "Help Translate Rancher"
 # Really generic things used in multiple places (use sparingly)
 ##############################
 generic:
+
   actions: Actions
   activate: Activate
   add: Add
   advanced: Advanced
   all: All
   any: Any
-  as: as
   application: application
+  as: as
   cancel: Cancel
   closeModal: Close
   cluster: Cluster
   collapseAll: Collapse All
-  command: Command
   comingSoon: Coming Soon
+  command: Command
   confirm: Confirm
   containers: Containers
   created: Created
   createdDate: "Created {date}"
-  customize: Customize
   custom: Custom
+  customize: Customize
   default: Default
   description: Description
   details: Details
@@ -43,8 +44,8 @@ generic:
   environment: Environment
   expandAll: Expand All
   from: from
-  gigabyte: 'GB'
   generic: 'Generic'
+  gigabyte: 'GB'
   hardware: Hardware
   healthy: Healthy
   help: Help
@@ -57,10 +58,10 @@ generic:
   limit: Limit
   limits: Limits
   loading: "Loading..."
-  mibibyte: 'MiB'
-  missing: "*%MISSING%*"
-  milliseconds: 'Milliseconds'
   member: Member
+  mibibyte: 'MiB'
+  milliseconds: 'Milliseconds'
+  missing: "*%MISSING%*"
   moreActions: More Actions
   na: 'n/a'
   name: Name
@@ -68,25 +69,25 @@ generic:
   namespaces: Namespaces
   never: Never
   no: "No"
-  node: Node
   noRating: No Rating
+  node: Node
   none: None
   owner: Owner
   paste: Paste
   pod: pod
   port: Port
   ports: Ports
-  project: Project
   prefix: prefix
+  project: Project
+  random: Random
   remove: Remove
   role: Role
-  random: Random
   save: Save
   saved: Saved
   saving: Saving
   search: Search
-  searching: 'Searching...'
   searchOrCustomInput: Search or input your custom value.
+  searching: 'Searching...'
   seconds: seconds
   select: Select
   service: Service
@@ -100,10 +101,11 @@ generic:
   total: Total
   type: Type
   unknown: Unknown
-  user: User
+  unknownUser: Unable to fetch user info
   upload: Upload
-  uuid: UUID
   url: URL
+  user: User
+  uuid: UUID
   value: Value
   version: Version
   yes: "Yes"
@@ -315,6 +317,35 @@ apiPage:
     noData: There are no API keys defined
 
 authPage:
+  freeipa:
+    providerName: FreeIPA
+    header:
+      enabled:
+        label: "{providerName} is enabled"
+        required: |
+          {appName} is configured to allow access to {groups, plural,
+            =0 {no groups}
+            =1 {# group}
+            other {# groups}
+          } and {users, plural,
+            =0 {no users}
+            =1 {# user}
+            other {# users}
+          }.
+        restricted: |
+          {appName} is configured to allow access to environment members, {groups, plural,
+            =0 {no groups}
+            =1 {# group}
+            other {# groups}
+          } and {users, plural,
+            =0 {no users}
+            =1 {# user}
+            other {# users}
+          }.
+        unrestricted: "{appName} is configured to allow access to any {providerName} user."
+      disabled:
+        label: "{providerName} is not configured"
+        warning: "{appName} can be configured to restrict access to a set of {providerName} users and groups.  This is not currently set up, so anybody that reach this page (or the API) has full control over the system."
   shibboleth:
     enabled:
       header: "{providerName} is enabled"
@@ -453,6 +484,8 @@ authPage:
       buttonText:
         pre: Authenticate with GitHub
         post: Waiting to hear back from GitHub
+      authError: 'Github access was not authorized'
+      popupError: 'Please disable your pop-up blocker and click "Authenticate" again.'
   azuread:
     header:
       enabled:
@@ -489,22 +522,23 @@ authPage:
         header: General
     configure:
       header: 'Configure Azure AD Account'
+      replyUrl: "Azure AD requires a pre-approved Reply Url for your Rancher server before beginning this setup. Please ensure that <code>{replyUrl}</code> is set in your Reply Url's section of your Azure Portal."
       help: Enter the Tenant ID, Client ID, and Admin user details to connect to your Azure AD auth account.
-      adminAccountUsername:
-        label: Admin Account Username
-        placeholder: e.g. rancher-admin
-        help: A user that can read information about other users
-      adminAccountPassword:
-        label: Admin Account Password
-      clientId:
-        label: Client ID
+      applicationId:
+        label: Application ID
         placeholder: A long UUID string
-      clientSecret:
-        label: Client Secret
-        placeholder: Your Client Secret
-      domain:
-        label: Domain
-        placeholder: e.g. youcompany.onmicrosoft.com
+      applicationSecret:
+        label: Application Secret
+      serverURL:
+        label: Rancher Server Url
+      azureADEndpoint:
+        label: Endpoint
+      azureADGraphEndpoint:
+        label: Graph Endpoint
+      azureADTokenEndpoint:
+        label: Token Endpoint
+      azureADAuthEndpoint:
+        label: Auth Endpoint
       tenantId:
         label: Tenant ID
         placeholder: A long UUID string
@@ -519,6 +553,8 @@ authPage:
         label: Login Password
       pre: Authenticate with Azure
       post: Waiting to hear back from Azure
+      authError: 'Azure access was not authorized'
+      popupError: 'Please disable your pop-up blocker and click "Authenticate" again.'
   localAuth:
     header:
       enabled: 'Local Authentication is enabled'
@@ -1112,6 +1148,8 @@ loginPage:
     ad: Active Directory
     azureAd: Azure AD
     local: a Local User
+    openldap: OpenLDAP
+    freeipa: FreeIPA
 
 machinePage:
   header: Node Drivers
@@ -1175,12 +1213,13 @@ configMapsPage:
 servicePage:
   header: 'Workload: {name}'
   globalScale: '{scale} per host'
+  endpoints: 'Endpoints:'
   multistat:
     type: 'Workload Type:'
     fqdn: 'FQDN:'
     scale: 'Scale:'
     image: 'Image:'
-    namesapce: 'Namesapce:'
+    namespace: 'Namespace:'
     created: 'Created:'
     daemonSetScale: '1 per node'
   serviceType:
@@ -1427,7 +1466,7 @@ notifierPage:
     defaultRecipient: Default Recipient (Channel)
     defaultRecipientPlaceholder: 'e.g. #example'
     helpText: |
-        Here's how you <a href="https://get.slack.help/hc/en-us/articles/115005265063-Incoming-WebHooks-for-Slack">create incoming WebHooks</a> for slack.
+        Here's how you <a href="https://get.slack.help/hc/en-us/articles/115005265063-Incoming-WebHooks-for-Slack" target="_blank" rel="nofollow noopener noreferrer">create incoming WebHooks</a> for slack.
 
   smtp:
     server: Smtp Server
@@ -1471,6 +1510,11 @@ ldap:
   providerName:
     openldap: OpenLDAP
     ad: Active Directory
+    freeipa: FreeIPA
+    saveLabels:
+      openldap: Authenticate with OpenLDAP
+      ad: Authenticate with Active Directory
+      freeipa: Authenticate with FreeIPA
   header:
     enabled:
       label: "{providerName} is enabled"
@@ -1546,6 +1590,10 @@ ldap:
       helpText: "This domain will be used if a user logs in without specifing one."
       labelText: Default Login Domain
       placeholder: "e.g. mycompany"
+    serviceAccountDistinguishedName:
+      labelText: Service Account Distinguished Name
+    connectionTimeout:
+      labelText: Server Connection Timeout
   customizeSchema:
     header: "2. Customize Schema"
     helpText: "If your schema does not match the standard ActiveDirectory format, you can customize it here."
@@ -1587,6 +1635,13 @@ ldap:
       groupDN:
         labelText: Group DN Attribute
         placeholder: distinguishedName
+      nestedGroup:
+        title: Nested Group Membership
+        enabled:
+          labelText: Search direct and nested group memberships
+          helpText: Nested search may be slower in large directories
+        disabled:
+          labelText: Search only direct group memberships
   testAuth:
     header: "3. Test and enable authentication"
     helpText: "Check that everything is configured correctly by testing authentication with your {providerName} account:"
@@ -1633,6 +1688,15 @@ annotationsSection:
   noData: No Annotations
   noMatch: No annotations match the current search
 
+taintsSection:
+  title: Taints
+  detail: Taints mark pods so that they are only scheduled to a node is marked as being able to "tolerate" it
+  key: Key
+  value: Value
+  effect: Effect
+  noData: No taints
+  noMatch: No taints match the current search
+
 billingInfo:
   header: Billing Info
   addNew: Add Payment Method
@@ -1658,11 +1722,74 @@ caasLogin:
     email: Email
 
 cloudProvider:
+  title: Cloud Provider
+  amazon: Amazon
+  azure: Azure
   name: Cloud Provider Name
+  custom:
+    helpText: 'Please edit the YAML to add in any other <a href="http://rancher.com/docs/rke/v0.1.x/en/config-options/cloud-providers/" target="_blank" rel="nofollow noopener noreferrer">cloud providers</a>'
+
   helpText: |
-    Read more about <a href="https://kubernetes.io/docs/concepts/cluster-administration/cloud-providers/" target="_blank" rel="nofollow noopener noreferrer">cloud provider</a>.
+     Read more about the <a href="https://kubernetes.io/docs/concepts/cluster-administration/cloud-providers/" target="_blank" rel="nofollow noopener noreferrer">Kubernetes cloud providers</a>
   warning:
     Configuring a Cloud Provider in your cluster without configuring the prerequisites will cause your cluster to not provision correctly. Prerequisites needed for supported cloud providers can be found in the documentation.
+  azureCloudConfig:
+    cloudProviderBackoff:
+      description: "Enable exponential backoff to manage resource request retries"
+    cloudProviderBackoffDuration:
+      description: "Backoff duration"
+    cloudProviderBackoffExponent:
+      description: "Backoff exponent"
+    cloudProviderBackoffJitter:
+      description: "Backoff jitter"
+    cloudProviderBackoffRetries:
+      description: "Backoff retry limit"
+    cloudProviderRateLimit:
+      description: "Enable rate limiting"
+    cloudProviderRateLimitBucket:
+      description: "Rate limit Bucket Size"
+    cloudProviderRateLimitQPS:
+      description: "Rate limit QPS (Read)"
+    maximumLoadBalancerRuleCount:
+      description: "Maximum allowed LoadBalancer Rule Count is the limit enforced by Azure Load balancer"
+    useInstanceMetadata:
+      description: "Use instance metadata service where possible"
+    useManagedIdentityExtension:
+      description: "Use managed service identity for the virtual machine to access Azure ARM APIs"
+    aadClientCertPassword:
+      description: "The password of the client certificate for an AAD application with RBAC access to talk to Azure RM APIs"
+    aadClientCertPath:
+      description: "The path of a client certificate for an AAD application with RBAC access to talk to Azure RM APIs"
+    aadClientId:
+      description: "The ClientID for an AAD application with RBAC access to talk to Azure RM APIs"
+    aadClientSecret:
+      description: "The ClientSecret for an AAD application with RBAC access to talk to Azure RM APIs"
+    cloud:
+      description: "The cloud environment identifier. See here for valid entries. See here for valid entries"
+    location:
+      description: "The location of the resource group that the cluster is deployed in"
+    primaryAvailabilitySetName:
+      description: "The name of the availability set that should be used as the load balancer backend"
+    primaryScaleSetName:
+      description: "The name of the scale set that should be used as the load balancer backend"
+    resourceGroup:
+      description: "The name of the resource group that the cluster is deployed in"
+    routeTableName:
+      description: "The name of the route table attached to the subnet that the cluster is deployed in"
+    securityGroupName:
+      description: "The name of the security group attached to the cluster's subnet"
+    subnetName:
+      description: "The name of the subnet that the cluster is deployed in"
+    subscriptionId:
+      description: "The ID of the Azure Subscription that the cluster is deployed in"
+    tenantId:
+      description: "The AAD Tenant ID for the Subscription that the cluster is deployed in"
+    vmType:
+      description: "The type of azure nodes. Candidate values are: vmss and standard"
+    vnetName:
+      description: "The name of the VNet that the cluster is deployed in"
+    vnetResourceGroup:
+      description: "The name of the resource group that the Vnet is deployed in"
 
 catalogSettings:
   header: Catalogs
@@ -1694,7 +1821,13 @@ catalogSettings:
       pl: Templates created and maintained by community members.
   more:
     header: Custom
-    helpText: You can define your own additional custom catalog sources.  Each one needs a unique name and a URL that <code>git clone</code> can handle (see <a href="https://git-scm.com/docs/git-clone#_git_urls_a_id_urls_a" target="_blank" rel="nofollow noopener noreferrer">docs</a> for more info).
+    helpText:
+      header: "You can define your own additional custom catalog sources. Each custom catalog needs the following:"
+      help-name: Unique name
+      help-repo: 'Repository URL :'
+      help-branch: "<i>Optional</i> : If using a GIT based catalog, a branch name is also required"
+      help-git: "GIT based catalog URL, <i>e.g. https://github.com/rancher/charts.git</i>"
+      help-chart: 'Helm Charts server URL, <i>e.g. https://kubernetes-charts.storage.googleapis.com/ (see <a href="https://docs.helm.sh/developing_charts/#hosting-chart-repositories" target="_blank" rel="nofollow noopener noreferrer">Hosting Chart Repositories</a> for specifics)</i>'
     addActionLabel: Add Catalog
     noMatch: No catalogs match the current search.
     noData: There are no custom catalogs defined.
@@ -1704,8 +1837,7 @@ catalogSettings:
       label: Name
       placeholder: e.g. mycatalog
     url:
-      label: URL
-      placeholder: 'e.g. https://github.com/mycompany/mycatalog.git'
+      label: Catalog URL
     kind:
       label: Kind
       native: Native
@@ -1713,7 +1845,8 @@ catalogSettings:
     branch:
       label: Branch
       placeholder: 'e.g. master'
-
+  errors:
+    nameInExists: 'You cannot enable {key} as there is a custom catalog already with name {key}.'
 clusterRow:
   noMatch: No environments match the current search.
   noData: This cluster doesn't have any environments yet.
@@ -1724,28 +1857,21 @@ clusterRow:
   importCluster: Use existing Kubernetes
   loginDefault: Login
 
-clusterWelcome:
-  welcome: Welcome
-  noHost: There are no hosts in this cluster yet.  Do you want to add hosts or use an existing Kubernetes installation?
-  addHost: Add Nodes
-  select: Select
-  importCluster: Use existing Kubernetes
-  importClusterDescription: |
-    <p>Deploy containers into an existing Kubernetes installation using the hosts and networking it provides.</p>
-    <p>Infrastructure resources are managed outside of {appName}.</p>
-    <p>Supports on-premise installations, or hosted services like:</p>
-  embeddedDescription: |
-    <p>{appName} automatically deploys and manages Kubernetes.</p>
-    <p>Deploy hosts with popular providers inside of {appName}, or use any existing hosts with Docker installed.</p>
-    <p>Supports any combination of virtual machines or bare-metal, running on-premise or cloud-hosted.</p>
-    <p>Provides secure overlay network for containers to communicate with each other across hosts.</p>
-
 clusterNew:
+  advanced:
+    helpText: Tabs are not able to be used in the yaml file for parsing.
+    cancel: Edit as a Form
+    yaml: Edit as YAML
   name:
     label: Cluster Name
     placeholder: e.g. sandbox
   description:
     placeholder: e.g. Cluster for dev and test workloads
+  driverLabels:
+    cloud: In a hosted Kubernetes provider
+    import: Import existing cluster
+    infra: From nodes in an infrastructure provider
+    custom: From my own existing nodes
   members:
     label: Member Roles
     detail: Control who has access to the cluster and what permission they have to change it.
@@ -1772,6 +1898,8 @@ clusterNew:
   azureaks:
     label: Azure Container Service
     shortLabel: Azure AKS
+    authenticate:
+      next: "Next: Authenticate & configure nodes"
     access:
       title: Account Access
       detail: Configure the Azure Active Directory (AD) Service Principal that will be used to talk to Azure
@@ -1794,7 +1922,7 @@ clusterNew:
     diskSizeGb:
       label: OS Disk Size
     dns:
-      label: DNS Prfix
+      label: DNS Prefix
       placeholder: "e.g. example"
     ssh:
       label: SSH Public Key
@@ -1829,6 +1957,18 @@ clusterNew:
     resourceGroup:
       label: Resource Group
       placeholder: 'docker-machine'
+      helpText: "Use an existing resource group or enter a new resource group name and one will be created for you. Note: Using a resource group containing an existing AKS cluster will create a new resource group. Azure AKS only allows one AKS cluster per resource group."
+    networking:
+      label: Networking
+      default: Default
+      advanced: Advanced
+      vnet:
+        label: Virtual Network
+      ventresourcegroup:
+        label: Virtual Network Resource Group (<em>Optional</em>)
+        help:  The Resource Group if your Virtual Network does not exist in the same Resource Group as your cluster.
+      subnet:
+        label: Subnet
     sshUser:
       label: SSH User
       placeholder: usr1
@@ -1876,7 +2016,7 @@ clusterNew:
       placeholder: Service account private key JSON file
       configured: Configured for {project} project
       helpText: |
-        Create a <a href="https://console.cloud.google.com/projectselector/iam-admin/serviceaccounts" target="_blank" rel="nofollow noopener noreferrer">Service Account</a> with a JSON private key and provide the JSON here.  See <a href="https://cloud.google.com/compute/docs/access/create-enable-service-accounts-for-instances" target="_blank" rel="nofollow noopener noreferrer">Google Cloud docs</a> for more info about creating a service account. Three IAM roles are required: <code>computer/viewer</code>, <code>project/viewer</code>, <code>kubernetes-engine/admin</code> and <code>service-account/user</code>, more info on roles can be found <a href="https://cloud.google.com/kubernetes-engine/docs/how-to/iam-integration" target="_blank" rel="nofollow noopener noreferrer">here.</a>
+        Create a <a href="https://console.cloud.google.com/projectselector/iam-admin/serviceaccounts" target="_blank" rel="nofollow noopener noreferrer">Service Account</a> with a JSON private key and provide the JSON here.  See <a href="https://cloud.google.com/compute/docs/access/create-enable-service-accounts-for-instances" target="_blank" rel="nofollow noopener noreferrer">Google Cloud docs</a> for more info about creating a service account. These IAM roles are required: Compute Viewer (<code>roles/compute.viewer</code>), (Project) Viewer (<code>roles/viewer</code>), Kubernetes Engine Admin (<code>roles/container.admin</code>), Service Account User (<code>roles/iam.serviceAccountUser</code>). More info on roles can be found <a href="https://cloud.google.com/kubernetes-engine/docs/how-to/iam-integration" target="_blank" rel="nofollow noopener noreferrer">here.</a>
     zone:
       label: Zone
       prompt: Choose a Zone...
@@ -1985,7 +2125,7 @@ clusterNew:
       detail: Choose what roles the node will have in the cluster
       header:
         etcd: etcd
-        controlplane: Control
+        controlplane: Control Plane
         worker: Worker
       requirements:
         label: "Number of nodes required:"
@@ -2018,7 +2158,8 @@ clusterNew:
     label: Imported
     shortLabel: Imported
     command:
-      instructions: "Run the kubectl command below on an existing Kubernetes 1.8.x cluster to import it into {appName}:"
+      instructionsAdminRole: "If your existing Kubernetes cluster already has a <b>cluster-admin</b> role defined, you must have this <b>cluster-admin</b> privilege to import the cluster into {appName}. In order to apply the privilege, you need to run the command below before running the command to import the cluster:"
+      instructions: "Run the kubectl command below on an existing Kubernetes cluster running a supported Kubernetes version to import it into {appName}:"
       instructionsInsecure: "If you get an error about 'certificate signed by unknown authority' because your {appName} installation is running with an untrusted/self-signed SSL certificate, run the command below instead to bypass the certificate check:"
 
 conditionSections:
@@ -2033,9 +2174,19 @@ conditionSections:
   noData: No Conditions
   noMatch: No conditions match the current search
 
+resourceEventList:
+  title: Events
+  detail: Events of current {resourceType}
+  table:
+    type: Type
+    lastUpdate: Last Update
+    reason: Reason
+    message: Message
+  noData: No Events
+  noMatch: No events match the current search
+
 confirmDelete:
   title: 'Are you sure you want to delete'
-  boundPVNote: 'Note: Bound persistent volumes will not be deleted before deleting the persistent volume claims using them.'
   environmentNote: 'Note: All resources inside this Project will be permanently removed, including any namespaces that were created through {appName}.'
   clusterNote: 'Note: Associated resources such as volumes, balancers, and networks that were created in the cloud provider will not be automatically removed.'
   protip: 'ProTip: Hold the {key} key while clicking Delete to bypass this confirmation.'
@@ -2279,7 +2430,7 @@ cruPersistentVolume:
   glusterfs:
     endpoints:
       label: Endpoints
-      placeholder: "e.g. 10.240.106.152:1"
+      placeholder: "e.g. glusterfs-cluster"
     path:
       label: Path
       placeholder: "e.g. kube_vol"
@@ -2884,7 +3035,7 @@ editUser:
     password:
       label: Change Password
       new: New Password
-      confirm: Confirm Password
+      confirm: Confirm New Password
       error: Passwords must match
       mustChangePassword:
         new: Ask user to change their password on first login
@@ -2929,6 +3080,7 @@ formBalancerConfig:
 formIngress:
   hostMode:
     automatic: Automatically generate a <code>.{domain}</code> hostname
+    existing: Keep the existing hostname <code>{domain}</code>
     manual: Specify a hostname to use
     default: Use as the default backend
   defaultBackend:
@@ -3706,6 +3858,31 @@ formAnnotations:
   errors:
     invalidJSON: Annotation JSON format is invalid.
     topLevelValueInvalid: Annotation JSON top-level value must be an object.
+formJobConfig:
+  title: Job Configuration
+  detail: Configure the desired behavior of jobs.
+  times: |
+    {count, plural,
+      =1 {Time}
+      other {Times}
+    }
+  seconds: |
+    {count, plural,
+      =1 {Second}
+      other {Seconds}
+    }
+  completions:
+    label: Completions
+    detail: The number of successfully finished pods the job should be run with.
+  parallelism:
+    label: Parallelism
+    detail: The maximum number of pods the job should run at any given time.
+  backoffLimit:
+    label: Back Off Limit
+    detail: The number of retries before marking this job failed.
+  activeDeadlineSeconds:
+    label: Active Deadline Seconds
+    detail: The duration that the job may be active before the system tries to terminate it.
 
 formUpgrade:
   title: Scaling/Upgrade Policy
@@ -3745,6 +3922,7 @@ formValueArray:
   protip: "ProTip: Paste one or more lines of values into any field for easy bulk entry."
 
 formVolumeRow:
+  prompt: Select a Persistent Volume Claim...
   name:
     label: Volume Name
     placeholder: e.g. vol1
@@ -3948,7 +4126,7 @@ hostSettings:
       Are you sure all the hosts you will create will be able to reach <code>{activeValue}</code> ?<br/>It looks like a private IP or local network.
   badTld:
     alert: |
-      The <code>.local</code> Top-Level Domain is reserved by RFC6762 for Multicast DNS.  Using this as your Registration URL is not recommended and may cause DNS resolution issues.  Please choose a different hostname or IP.
+      The <code>.local</code> Top-Level Domain is reserved by RFC6762 for Multicast DNS.  Using this as your Registration URL is strongly discouraged and may cause DNS resolution issues as well as problems with addons like secrets and networked storage drivers.  Please choose a different hostname or IP.
 
 hostPod:
   supportState:
@@ -4028,6 +4206,9 @@ loginShibboleth:
 
 loginGithub:
   buttonText: Log In with GitHub
+
+loginAzure:
+  buttonText: Log In with Azure AD
 
 loginUserPass:
   local: Use a Local User
@@ -4306,6 +4487,7 @@ modalYaml:
   title:
     new: Import {type} YAML
     edit: 'Edit YAML: {name}'
+    view: 'View YAML: {name}'
 
 modalWelcome:
   header: Welcome to {appName}!
@@ -4363,6 +4545,7 @@ newCatalog:
   noConfig: This template has no configuration options
   official: Officially Certified
   preview: Preview
+  templateFiles: Template Files
   seeMore: More information...
   saveConfigure: Configure
   saveNew: Launch
@@ -4467,11 +4650,14 @@ nodeDriver:
     zstack: ZStack
   driverOptions: "{driver} Options"
   templateOptions: "{appName} Template"
+  amazoneks:
+    access:
+      loading: Loading Instance info from Amazon...
   amazonec2:
     access:
       title: 1. Account Access
       detail: Choose the region and API Key that will be used to launch EC2 Instances
-      next: "Next: Authenticate & select a network"
+      next: "Next: Authenticate & configure nodes"
       loading: Loading Availablility Zone and VPC info from EC2...
       help: "Paste in your AWS key pair here. We'll use this key to create your new Instances."
     zone:
@@ -4663,7 +4849,7 @@ nodeDriver:
     access:
       title: 1. Account Access
       detail: Configure where to find the VCenter or ESXi server
-      help: "Note: The free ESXi liecense does not support API access.  Only servers with a valid or evaluation license are supported."
+      help: "Note: The free ESXi license does not support API access.  Only servers with a valid or evaluation license are supported."
     instance:
       title: 2. Instance Options
       detail: Choose the size and OS of the virtual machine
@@ -4692,7 +4878,7 @@ nodeDriver:
       unit: MB
     boot2dockerUrl:
       label: OS ISO URL
-      placeholder: "Default: Latest boot2docker image"
+      placeholder: "Default: Latest rancheros-vmware image"
     schedulingSection: Scheduling
     dataCenter:
       label: Data Center
@@ -4884,15 +5070,18 @@ nodeDriver:
       label: Security Group
       placeholder: Security Group
       prompt: Choose a Security Group...
+      defaultCreate: "Automatically create a <code>{groupName}</code> group"
     sshPassword:
       label: SSH Password
-      placeholder: Set Instance SSH Password, Blank for Auto set
+      placeholder: Set Instance SSH Password (Optional)
       provided: Provided
     tags:
       addActionLabel: Add Instance Tag
       valueLabel: Tags
       placeholder: e.g. dev
     errors:
+      vpcIdRequired: VPC is required.
+      vswitchIdRequired: VSwitch is required.
       accessKeyRequired: Access Key is required.
       accessSecretRequired: Access Secret Key is required.
       sshPasswordLengthNotValid: The length of SSH password must between eight and thirty.
@@ -5000,9 +5189,9 @@ pagination:
   container: |
     {pages, plural,
     =0 {No Clusters}
-    =1 {{count} {count, plural, =1 {Cluster} other {Clusters}}}
-    other {{from} - {to} of {count} Clusters}}
-  cluster: |
+    =1 {{count} {count, plural, =1 {Container} other {Containers}}}
+    other {{from} - {to} of {count} Containers}}
+  cluster: l|
     {pages, plural,
     =0 {No Clusters}
     =1 {{count} {count, plural, =1 {Cluster} other {Clusters}}}
@@ -5227,6 +5416,8 @@ siteAccess:
   restricted: "Allow members of Clusters, Projects, plus Authorized {individuals} and {collection}"
   required: "Restrict access to only Authorized {individuals} and {collection}"
   listHeader: "Authorized {individuals} and {collection}"
+  dupe: "User access already enabled"
+  minimum: 'You must add at least one authorized entry'
   noIdentity: None
   users: Users
   groups: Groups
@@ -5455,12 +5646,15 @@ action:
   addSidekick: Add a Sidecar
   clone: Clone
   console: Open Console
+  cordon: Cordon
   convertToService: Convert to Service
   deactivate: Deactivate
   downloadYaml: Download YAML
+  drain: Drain
   edit: Edit
   editService: Edit Service
   editYaml: View/Edit YAML
+  viewYaml: View YAML
   evacuate: Evacuate
   execute: Execute Shell
   exportConfig: Export Config
@@ -5493,6 +5687,7 @@ action:
   test: Test
   mute: Mute
   unmute: Unmute
+  uncordon: Uncordon
 
 ##############################
 # Resource Actions
@@ -5567,7 +5762,7 @@ model:
     role:
       worker: Worker
       etcd: etcd
-      controlPlane: Control
+      controlPlane: Control Plane
   openldapconfig:
     server:
       label: Hostname or IP Address
@@ -5705,3 +5900,46 @@ volumeSource:
 
 yamlPage:
   errors: There are errors in the yaml.
+
+rkeConfigComment:
+  ingress: |
+    ""
+    "  # Currently only nginx ingress provider is supported."
+    "  # To disable ingress controller, set `provider: none`"
+    "  # To enable ingress on specific nodes, use the node_selector, eg:"
+    "     provider: nginx"
+    "     node_selector:"
+    "       app: ingress"
+  network: |
+    ""
+    "  # If you are using calico on AWS"
+    ""
+    "     network:"
+    "       plugin: calico"
+    "       calico_network_provider:"
+    "         cloud_provider: aws"
+    ""
+    "  # To specify flannel interface"
+    ""
+    "     network:"
+    "       plugin: flannel"
+    "       flannel_network_provider:"
+    "         iface: eth1"
+    ""
+    "  # To specify flannel interface for canal plugin"
+    ""
+    "     network:"
+    "       plugin: canal"
+    "       canal_network_provider:"
+    "         iface: eth1"
+  services: |
+    ""
+    "     services:"
+    "       kube_api:"
+    "         service_cluster_ip_range: 10.43.0.0/16"
+    "       kube_controller:"
+    "         cluster_cidr: 10.42.0.0/16"
+    "         service_cluster_ip_range: 10.43.0.0/16"
+    "       kubelet:"
+    "         cluster_domain: cluster.local"
+    "         cluster_dns_server: 10.43.0.10"

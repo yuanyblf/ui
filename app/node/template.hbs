@@ -22,7 +22,9 @@
     </div>
     <div class="vertical-middle">
       <label class="acc-label vertical-middle p-0">{{t 'hostsPage.hostPage.ipAddress'}}</label>
-      {{model.node.ipAddress}} {{copy-to-clipboard clipboardText=model.node.ipAddress size="small"}}
+      <div class="inline-block">
+        {{node-ip model=model.node textMuted=false}}
+      </div>
     </div>
     <div class="vertical-middle">
       <label class="acc-label vertical-middle p-0">{{t 'hostsPage.hostPage.kubeletVersion'}}</label>
@@ -84,6 +86,13 @@
     <div class="mt-20">
       {{annotations-section
         model=model.node
+        expandAll=al.expandAll
+        expandFn=expandFn
+      }}
+    </div>
+    <div class="mt-20">
+      {{taints-section
+        taints=model.node.taints
         expandAll=al.expandAll
         expandFn=expandFn
       }}

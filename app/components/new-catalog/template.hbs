@@ -95,10 +95,10 @@
       </div>
     </div>
     <div class="row">
-      {{#unless customizeNamespace}}
+      {{#unless (or customizeNamespace (not selectedTemplateModel))}}
         <div class="col span-12">
-          {{t 'newCatalog.customizeNamespace' namespaceId=primaryResource.name htmlSafe=true}}
-          {{#unless editing}}
+          {{t 'newCatalog.customizeNamespace' namespaceId=(if requiredNamespace requiredNamespace primaryResource.name) htmlSafe=true}}
+          {{#unless (or editing requiredNamespace)}}
             <button class="btn btn-sm bg-transparent pl-0" {{action 'toogleNamespace'}}>
               {{t 'generic.customize'}}
             </button>
@@ -111,7 +111,6 @@
 
           {{form-namespace
               namespace=primaryResource
-              mode='reuse'
               errors=namespaceErrors
           }}
         {{/if}}
@@ -166,7 +165,7 @@
         <div class="tabs">
           <div class="tab-header row">
             <div class="col span-4">
-              <label class="acc-label">Template Files</label>
+              <label class="acc-label">{{t 'newCatalog.templateFiles'}}</label>
               {{searchable-select
                   content=filenames
                   value=previewTab
@@ -175,11 +174,20 @@
             </div>
           </div>
 
-          <div class="tab-content" role="tabpanel">
-            {{#each selectedTemplateModel.filesAsArray as |file|}}
-              {{code-block code=file.body language="yaml" hide=(not-eq previewTab file.name)}}
-            {{/each}}
-            {{code-block code=answersString language="yaml" hide=(not-eq  previewTab 'answers')}}
+          <div class="row">
+            {{#if decoding}}
+              <section class="row">
+                <div class="text-center">
+                  <i class="icon icon-spinner icon-spin" style="font-size:36px;"></i>
+                </div>
+              </section>
+            {{else}}
+              {{#if (eq  previewTab 'answers')}}
+                {{code-block code=answersString language="yaml"}}
+              {{else}}
+                {{code-block code=selectedFileContetnt language="yaml"}}
+              {{/if}}
+            {{/if}}
           </div>
         </div>
       {{/if}}

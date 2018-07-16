@@ -23,6 +23,11 @@
           <button class="btn btn-link btn-sm bg-defualt" {{action "enableLibrary"}} disabled={{togglingLibrary}}>{{#if togglingLibrary}}<i class="icon icon-spinner icon-spin"></i> {{/if}}{{t 'generic.enable'}}</button>
         </div>
       {{/if}}
+      {{#if customLibrary}}
+        {{#banner-message color='bg-warning'}}
+          {{t 'catalogSettings.errors.nameInExists' key='library' }}
+        {{/banner-message}}
+      {{/if}}
     </div>
     <p class="text-info">
       {{t 'catalogSettings.library.detail' appName=settings.appName}}
@@ -42,6 +47,11 @@
           <button class="btn btn-link btn-sm bg-primary">{{t 'generic.disabled'}}</button>
           <button class="btn btn-link btn-sm bg-defualt" {{action "enableHelmStable"}} disabled={{togglingHelmStable}}>{{#if togglingHelmStable}}<i class="icon icon-spinner icon-spin"></i> {{/if}}{{t 'generic.enable'}}</button>
         </div>
+      {{/if}}
+      {{#if customHelmStable}}
+        {{#banner-message color='bg-warning'}}
+          {{t 'catalogSettings.errors.nameInExists' key='helm' }}
+        {{/banner-message}}
       {{/if}}
     </div>
     <p class="text-info">
@@ -63,6 +73,11 @@
           <button class="btn btn-link btn-sm bg-defualt" {{action "enableHelmIncubator"}} disabled={{togglingHelmIncubator}}>{{#if togglingHelmIncubator}}<i class="icon icon-spinner icon-spin"></i> {{/if}}{{t 'generic.enable'}}</button>
         </div>
       {{/if}}
+      {{#if customHelmIncubator}}
+        {{#banner-message color='bg-warning'}}
+          {{t 'catalogSettings.errors.nameInExists' key='helm-incubator' }}
+        {{/banner-message}}
+      {{/if}}
     </div>
     <p class="text-info">
       {{t 'catalogSettings.helm.incubator.detail'}}
@@ -72,7 +87,20 @@
 
 <section class="header clearfix">
   <h1>{{t 'catalogSettings.more.header'}}</h1>
-  <p>{{t 'catalogSettings.more.helpText' htmlSafe=true}}</p>
+  <div>
+    <p>{{t 'catalogSettings.more.helpText.header' htmlSafe=true}}</p>
+    <ul class="">
+      <li>{{t 'catalogSettings.more.helpText.help-name' htmlSafe=true}}</li>
+      <li>
+        <span>{{t 'catalogSettings.more.helpText.help-repo' htmlSafe=true}}</span>
+        <ul>
+          <li>{{t 'catalogSettings.more.helpText.help-git' htmlSafe=true}}</li>
+          <li>{{t 'catalogSettings.more.helpText.help-chart' htmlSafe=true}}</li>
+        </ul>
+      </li>
+      <li>{{t 'catalogSettings.more.helpText.help-branch' htmlSafe=true}}</li>
+    </ul>
+  </div>
 </section>
 
 {{#sortable-table

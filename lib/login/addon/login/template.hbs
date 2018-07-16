@@ -37,14 +37,28 @@
         }}
       {{/if}}
 
-      {{#if isAzureAd}}
+      {{#if isOpenLdap}}
         {{login-user-pass
             action="authenticate"
             classNames="row"
-            provider="azuread"
+            provider="openldap"
             shown=true
-            waiting=azureadWaiting
+            waiting=adWaiting
         }}
+      {{/if}}
+
+      {{#if isFreeIpa}}
+        {{login-user-pass
+            action="authenticate"
+            classNames="row"
+            provider="freeipa"
+            shown=true
+            waiting=adWaiting
+        }}
+      {{/if}}
+
+      {{#if isAzureAd}}
+        {{login-azure action="started"}}
       {{/if}}
 
       {{#if isLocal}}

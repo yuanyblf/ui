@@ -7,111 +7,114 @@
       expand=(action expandFn)
     }}
       <div class="row">
-        <div class="col span-4">
-          <label class="acc-label">{{t 'clusterNew.rke.version.label'}}</label>
-          {{new-select
-            content=versionChoices
-            optionLabelPath='value'
-            value=config.kubernetesVersion
-          }}
-        </div>
-        <div class="col span-4">
-          <label class="acc-label">{{t 'clusterNew.rke.network.label'}}</label>
-          {{new-select
-            classNames="form-control"
-            content=networkChoices
-            localizedLabel=true
-            value=config.network.plugin
-          }}
-          {{#if (eq config.network.plugin 'flannel')}}
-            <label class="acc-label mt-5">{{t 'clusterNew.rke.network.options.flannel.iface.label'}}</label>
-            {{input type="text" value=config.network.flannelNetworkProvider.iface}}
-          {{else if (eq config.network.plugin 'canal')}}
-            <label class="acc-label mt-5">{{t 'clusterNew.rke.network.options.canal.iface.label'}}</label>
-            {{input type="text" value=config.network.canalNetworkProvider.iface}}
-          {{else if (eq config.network.plugin 'calico')}}
-             <label class="acc-label mt-5">{{t 'clusterNew.rke.network.options.calico.cloudProvider.label'}}</label>
-             {{input type="text" value=config.network.calicoNetworkProvider.cloudProvider}}
-          {{/if}}
-        </div>
-        <div class="col span-4">
-          <label class="acc-label">{{t 'clusterNew.rke.podSecurityPolicy.label'}}</label>
-          <div class="radio">
-            <label>
-              {{radio-button selection=config.services.kubeApi.podSecurityPolicy value=false disabled=(not model.psps.length)}}
-              {{t 'generic.disabled'}}
-            </label>
-          </div>
-          <div class="radio">
-            <label class={{unless model.psps.length 'text-muted'}}>
-              {{radio-button selection=config.services.kubeApi.podSecurityPolicy value=true disabled=(not model.psps.length)}}
-              {{t 'generic.enabled'}}
-              {{#unless model.psps.length}}
-                &mdash; {{t 'clusterNew.psp.none'}}
-              {{/unless}}
-            </label>
-          </div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col span-6">
-          <label class="acc-label">{{t 'clusterNew.rke.ignoreDockerVersion.label'}}</label>
-          <div class="radio">
-            <label>
-              {{radio-button selection=config.ignoreDockerVersion value=false}}
-              {{t 'clusterNew.rke.ignoreDockerVersion.disabled'}}
-            </label>
-          </div>
-          <div class="radio">
-            <label>
-              {{radio-button selection=config.ignoreDockerVersion value=true}}
-              {{t 'clusterNew.rke.ignoreDockerVersion.enabled'}}
-            </label>
-          </div>
-        </div>
-
-        <div class="col span-6">
-          {{#if config.services.kubeApi.podSecurityPolicy}}
-            <label class="acc-label">{{t 'clusterNew.psp.label'}}{{field-required}}</label>
-            {{new-select
-              content=model.psps
-              optionLabelPath='displayName'
-              optionValuePath='id'
-              prompt='clusterNew.psp.prompt'
-              localizedPrompt=true
-              value=cluster.defaultPodSecurityPolicyTemplateId
-              disabled=(not config.services.kubeApi.podSecurityPolicy)
-            }}
+        <div class="btn-group  pull-right">
+          {{#if pasteOrUpload}}
+            <button class="btn btn-sm" {{action 'cancel'}}>{{t 'clusterNew.advanced.cancel'}}</button>
           {{else}}
-            <label class="acc-label">{{t 'clusterNew.psp.label'}}</label>
-            <div class="form-control-static">{{t 'generic.none'}}</div>
+            <button class="btn btn-sm bg-primary" {{action 'showPaste'}}>{{t 'clusterNew.advanced.yaml'}} <span class="icon icon-copy"></span></button>
           {{/if}}
+          <button class="btn btn-sm bg-primary" {{action "click"}}>{{t 'uploadFile.label'}} <span class="icon icon-upload"></span></button>
         </div>
       </div>
-      <div class="row">
-        <div class="col span-6">
-          <label class="acc-label mt-5">{{t 'clusterNew.rke.etcd.heartbeat.label'}}</label>
-          <div class="input-group">
-            {{input-integer min="0" step="100" value=config.services.etcd.extraArgs.heartbeat-interval classNames="form-control" placeholder=(t 'clusterNew.rke.etcd.heartbeat.placeholder')}}
-            <div class="input-group-addon bg-default">{{t 'generic.milliseconds'}}</div>
+
+      {{#if pasteOrUpload}}
+        <div class="banner bg-info">
+          <div class="banner-icon p-10"><i class="icon icon-info"></i></div>
+          <div class="banner-message">
+            {{t 'clusterNew.advanced.helpText'}}
           </div>
         </div>
-        <div class="col span-6">
-          <label class="acc-label mt-5">{{t 'clusterNew.rke.etcd.election.label'}}</label>
-          <div class="input-group">
-            {{input-integer min="0" step="1000" value=config.services.etcd.extraArgs.election-timeout classNames="form-control" placeholder=(t 'clusterNew.rke.etcd.election.placeholder')}}
-            <div class="input-group-addon bg-default">{{t 'generic.milliseconds'}}</div>
-          </div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col span-12">
-          {{cru-cloud-provider
-              cluster=model.cluster
-              driver=nodeWhich
+        <div class="mt-25">
+          {{input-yaml
+            showUpload=false
+            showDownload=false
+            canChangeName=false
+            value=value
           }}
         </div>
-      </div>
+        {{copy-to-clipboard tooltipText="" buttonText="copyToClipboard.tooltip" clipboardText=value class="with-clip"}}
+      {{else}}
+        <div class="row">
+          <div class="col span-4">
+            <label class="acc-label">{{t 'clusterNew.rke.version.label'}}</label>
+            {{new-select
+              content=versionChoices
+              optionLabelPath='value'
+              value=config.kubernetesVersion
+            }}
+          </div>
+          <div class="col span-4">
+            <label class="acc-label">{{t 'clusterNew.rke.network.label'}}</label>
+            {{new-select
+              classNames="form-control"
+              content=networkChoices
+              localizedLabel=true
+              value=config.network.plugin
+            }}
+          </div>
+          <div class="col span-4">
+            <label class="acc-label">{{t 'clusterNew.rke.podSecurityPolicy.label'}}</label>
+            <div class="radio">
+              <label>
+                {{radio-button selection=config.services.kubeApi.podSecurityPolicy value=false disabled=(not model.psps.length)}}
+                {{t 'generic.disabled'}}
+              </label>
+            </div>
+            <div class="radio">
+              <label class={{unless model.psps.length 'text-muted'}}>
+                {{radio-button selection=config.services.kubeApi.podSecurityPolicy value=true disabled=(not model.psps.length)}}
+                {{t 'generic.enabled'}}
+                {{#unless model.psps.length}}
+                  &mdash; {{t 'clusterNew.psp.none'}}
+                {{/unless}}
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col span-8">
+            <label class="acc-label">{{t 'clusterNew.rke.ignoreDockerVersion.label'}}</label>
+            <div class="radio">
+              <label>
+                {{radio-button selection=config.ignoreDockerVersion value=false}}
+                {{t 'clusterNew.rke.ignoreDockerVersion.disabled'}}
+              </label>
+            </div>
+            <div class="radio">
+              <label>
+                {{radio-button selection=config.ignoreDockerVersion value=true}}
+                {{t 'clusterNew.rke.ignoreDockerVersion.enabled'}}
+              </label>
+            </div>
+          </div>
+
+          <div class="col span-4">
+            {{#if config.services.kubeApi.podSecurityPolicy}}
+              <label class="acc-label">{{t 'clusterNew.psp.label'}}{{field-required}}</label>
+              {{new-select
+                content=model.psps
+                optionLabelPath='displayName'
+                optionValuePath='id'
+                prompt='clusterNew.psp.prompt'
+                localizedPrompt=true
+                value=cluster.defaultPodSecurityPolicyTemplateId
+                disabled=(not config.services.kubeApi.podSecurityPolicy)
+              }}
+            {{else}}
+              <label class="acc-label">{{t 'clusterNew.psp.label'}}</label>
+              <div class="form-control-static">{{t 'generic.none'}}</div>
+            {{/if}}
+          </div>
+        </div>
+        <div class="row">
+          <div class="col span-12">
+            {{cru-cloud-provider
+                cluster=model.cluster
+                driver=nodeWhich
+            }}
+          </div>
+        </div>
+      {{/if}}
     {{/accordion-list-item}}
   {{/accordion-list}}
 
@@ -222,6 +225,7 @@
 {{top-errors errors=errors}}
 {{top-errors errors=clusterErrors}}
 {{top-errors errors=otherErrors}}
+{{top-errors errors=clusterOptErrors}}
 {{#if (or isEdit (eq step 1))}}
   {{save-cancel createLabel=(if isCustom 'saveCancel.next' 'saveCancel.create') editing=isEdit save="driverSave" cancel="close"}}
 {{else}}
@@ -229,3 +233,4 @@
     <button {{action "close"}} class="btn bg-primary">{{t 'clusterNew.rke.done'}}</button>
   </div>
 {{/if}}
+<input type="file" accept="{{actualAccept}}" class="hide">

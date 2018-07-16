@@ -19,7 +19,7 @@ alertPage:
     repeatIntervalHelpText: 当告警处于活动状态时，重复发送通知的时间间隔
     whenA: 当
     happens: 发生
-    sendA: 发生
+    sendA: 发送
     to: 到
     alert: 告警
     is: 是
@@ -38,6 +38,8 @@ alertPage:
     notRunning: 未运行
     notScheduled: 未调度
     restarted: 重启
+    restartedTimes: 次在最近的
+    minutes: 分钟
     available: 可用
     createOne: 创建一条
     noNotifierHelpText: 没有定义通知规则，去
