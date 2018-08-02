@@ -210,6 +210,10 @@ appDetailPage:
     title: Volumes
     detail: Persistant Volume claims created with this application
     nodata: No volume claims were made for this application.
+  configMaps:
+    title: Config Maps
+    detail: Config Maps associated with this application
+    nodata: This application has no config maps
   secrets:
     title: Secrets
     detail: Secrets associated with this application
@@ -252,13 +256,17 @@ rolesPage:
       noMatch: No roles match the current search
       subjectKind: Kind
       template: Template
+      global: New User Default
+      cluster: Cluster Creator Default
+      project: Project Creator Default
+      showDefaults: Show Only Defaults
   resources:
     title: Grant Resources
     detail: Grant access to specific operations on Kubernetes resources
   inherit:
     title: Inherit from a Role
     detail: Include all the permissions of another role
-  addRole: Add Role
+  addRole: "Add {context} Role"
   editRole: Edit Role
   saveEdit: Edit
   saveNew: Create
@@ -300,6 +308,15 @@ rolesPage:
       policy:
         policy: Policy
         addAction: Add Policy
+      default:
+        global: New User Default
+        cluster: Cluster Creator Default
+        project: Project Creator Default
+        enabled:
+          global: "Yes: Default role for new users"
+          cluster: "Yes: Default role for new cluster creation"
+          project: "Yes: Default role for new project creation"
+        disabled: "No"
 
 apiPage:
   header: API & Keys
@@ -317,6 +334,58 @@ apiPage:
     noData: There are no API keys defined
 
 authPage:
+  saml:
+    accessEnabled:
+      header: Authentication
+      disable: Disable access control
+    header:
+      disabled:
+        label: "{providerName} is not configured"
+    enabled:
+      authenticated:
+        header:
+          text: Authentication
+      groupsField: 'Groups:'
+      displayName: 'Display Name:'
+      userName: 'Username:'
+      userId: 'User ID:'
+    disabled:
+      header: '1. Configure {providerName} Account'
+      headerDetail: 'Enter your {providerName} account details'
+      label: "{providerName} is not configured"
+      name:
+        labelText: Display Name Field
+        display: "Display Name Field:"
+      username:
+        labelText: User Name Field
+        display: "User Name Field:"
+      uid:
+        labelText: UID Field
+        display: "UID Field:"
+      rancherApiHost:
+        labelText: "{appName} API Host"
+        display: "{appName} API Host:"
+      groups:
+        labelText: Groups Field
+        display: "Groups Field:"
+      testAuth:
+        header: '2. Test and enable authentication'
+        subtext: 'Check that your application is configured correctly by testing authentication with it:'
+    providerName:
+      ping: Ping
+      adfs: AD FS
+    authError: 'Access was not authorized'
+    popupError: 'Please disable your pop-up blocker and click "Authenticate" again.'
+  ping:
+    buttonText:
+      pre: 'Authenticate with Ping'
+      post: Waiting to hear back from IDP
+  adfs:
+    buttonText:
+      pre: 'Authenticate with AD FS'
+      post: Waiting to hear back from IDP
+
+
   shibboleth:
     enabled:
       authenticated:
@@ -420,7 +489,7 @@ authPage:
         header: General
     configure:
       header: 'Configure Azure AD Account'
-      replyUrl: "Azure AD requires a pre-approved Reply Url for your Rancher server before beginning this setup. Please ensure that <code>{replyUrl}</code> is set in your Reply Url's section of your Azure Portal."
+      replyUrl: "Azure AD requires a pre-approved Reply URL for your {appName} server before beginning this setup. Please ensure that <code>{replyUrl}</code> is set in the Reply URL section of your Azure Portal."
       help: Enter the Tenant ID, Client ID, and Admin user details to connect to your Azure AD auth account.
       applicationId:
         label: Application ID
@@ -608,6 +677,27 @@ projectsListNamespacePage:
   notIn: Not in a project
   current: In this project
 
+quotaTemplatesPage:
+  header: Quota Templates
+  addQuotaTemplate: Add Quota Template
+  editQuotaTemplate: Edit Quota Template
+  quotaTemplate: 'Quota Template: {name}'
+  title: Resource Quotas
+  detail: Configure how much of the resources a namespace can consume.
+  noMatch: No resource quota templates match the current search.
+  noData: This cluster doesn't have any resource quota templates defined.
+  name:
+    label: Name
+    placeholder: e.g. large
+  table:
+    name:
+      label: Name
+    default:
+      label: Default
+    created:
+      label: Created
+
+
 projectsPage:
   header: Projects/Namespaces
   headerNS: Namespaces
@@ -618,7 +708,8 @@ projectsPage:
   groups:
     none: List Namespaces
     namespaces: Grouped Projects/Namespaces
-
+  quota:
+    label: Resource Quota
   ns:
     label: Namespace Name
     placeholder: e.g. lab
@@ -629,6 +720,9 @@ projectsPage:
     label: Created
   psp:
     label: Pod Security Policy
+  resourceQuota:
+    title: Resource Quotas
+    detail: Configure how much of the resources the project as a whole can consume
   members:
     title: Members
     detail: Configure who has access to the resources in this project and what permissions they have
@@ -735,7 +829,9 @@ clusterDashboard:
   cpu: CPU
   memory: Memory
   pods: Pods
-  subtitle: "{used} of {total} used"
+  subtitle:
+    reserved: "{used} of {total} reserved"
+    used: "{used} of {total} used"
   node: Nodes
   etcd: etcd
   scheduler: Scheduler
@@ -1585,17 +1681,6 @@ billingInfo:
       name: "Name On Card: {name}"
       actions: Actions
 
-caasLogin:
-  resetHeader: Reset Password
-  new: Create Account
-  reset: Reset Password
-  resetSuccess: Success! Check your email for a link to change your password.
-  error: There was an error retrieving your email. Ensure your email is correct and try again.
-  invalidEmail: You input is not a valid email address. Please enter a valid email address and try again.
-  login: Login Page
-  form:
-    email: Email
-
 cloudProvider:
   title: Cloud Provider
   amazon: Amazon
@@ -1701,7 +1786,7 @@ catalogSettings:
       help-name: Unique name
       help-repo: 'Repository URL :'
       help-branch: "<i>Optional</i> : If using a GIT based catalog, a branch name is also required"
-      help-git: "GIT based catalog URL, <i>e.g. https://github.com/rancher/charts.git</i>"
+      help-git: "GIT based catalog URL, <i class='text-lowercase'>e.g. https://github.com/{appName}/charts.git</i>"
       help-chart: 'Helm Charts server URL, <i>e.g. https://kubernetes-charts.storage.googleapis.com/ (see <a href="https://docs.helm.sh/developing_charts/#hosting-chart-repositories" target="_blank" rel="nofollow noopener noreferrer">Hosting Chart Repositories</a> for specifics)</i>'
     addActionLabel: Add Catalog
     noMatch: No catalogs match the current search.
@@ -1914,6 +1999,18 @@ clusterNew:
       placeholder: e.g. 10.42.0.0/16
     alphaFeatures:
       label: Alpha Features
+    legacyAuth:
+      label: Legacy Authorization
+    stackDriverLogging:
+      label: Stackdriver Logging
+    stackdriverMonitor:
+      label: Stackdriver Monitoring
+    dashboard:
+      label: Kubernetes Dashboard
+    httpLB:
+      label: Http Load Balancing
+    maintenanceWindow:
+      label: Maintenance Window
   rke:
     etcd:
       heartbeat:
@@ -1978,9 +2075,11 @@ clusterNew:
           cloudProvider:
             label: Cloud Provider
     ingress:
-      label: Ingress Provider
-      none: None
-      nginx: Nginx
+      label: Nginx Ingress
+    monitoring:
+      label: Metrics Server Monitoring
+    networkPolicy:
+      label: Project Network Isolation
     version:
       label: Kubernetes Version
     registry:
@@ -2033,6 +2132,8 @@ clusterNew:
       etcd: Please select 1, 3, or 5 nodes to use for etcd.
       controlPlane: Please select at least one node to use for for management.
       worker: Please select at least one node to use as a worker.
+    dockerRootDir:
+      placeholder: Default directory is {dir}.
   custom:
     label: Custom
     shortLabel: Custom
@@ -2086,6 +2187,7 @@ containerLogs:
   scrollTop: Scroll to Top
   scrollBottom: Scroll to Bottom
   clear: Clear Screen
+  wrapLines: Wrap lines
   status:
     initializing: Initializing...
     connecting: Connecting...
@@ -2148,6 +2250,8 @@ cruPersistentVolume:
     title: Plugin Configuration
     detail: Configure options for the selected volume plugin
     prompt: Choose a volume plugin...
+  nodeAffinity:
+    label: Node Affinity
   customize:
     title: Customize
     detail: Customize Advanced options
@@ -2772,10 +2876,11 @@ dangerZone:
     'engine-newest-version': 'The newest supported version of Docker at the time of this release.  A Docker version that does not satisfy supported docker range but is newer than this will be marked as untested'
     'engine-supported-range': 'Semver range for suported Docker engine versions.  Versions which do not satisfy this range will be marked unsupported in the UI'
     'ingress-ip-domain': 'Wildcard DNS domain to use for automatically generated Ingress hostnames. <ingress-name>.<namespace-name>.<ip address of ingress controller> will be added to the domain.'
-    'server-url': 'Default Rancher install url. Must be HTTPS. All nodes in your cluster must be able to reach this.'
+    'server-url': 'Default {appName} install url. Must be HTTPS. All nodes in your cluster must be able to reach this.'
     'system-default-registry': 'Private registry to be used for all system Docker images'
     'ui-index': 'HTML index location for the UI.'
     'ui-pl': 'Private-Label company name'
+    'telemetry-opt': 'Telemetry reporting opt-in'
 
 editAccount:
   title: Edit Account
@@ -2896,6 +3001,9 @@ editStack:
   project:
     label: Project
     prompt: Select a Project...
+  quota:
+    label: Quota Template
+    prompt: Use the default quota template......
   description:
     label: Description
     placeholder: e.g. MyApp namespace
@@ -2958,6 +3066,24 @@ formBalancerConfig:
     See <a href="https://cbonte.github.io/haproxy-dconv/1.6/configuration.html" target="_blank" rel="nofollow noopener noreferrer">haproxy documentation</a> for more info about specific options that can go into the the config file.  When overriding the <code>backend</code> or similar lines which include the IP address of the target container, use <code>$IP</code> where the address goes and {appName} will generate the appropriate line(s).
   config:
     prompt: Custom haproxy.cfg content
+
+formNodeAffinity:
+  addRuleLabel: Add Node Selector
+  noRules: No node Selectors
+  removeRuleLabel: Remove this Node Selector
+
+formNodeRequirement:
+  label: Rules
+  addRuleLabel: Add Rule
+  noRules: No Rules
+  key:
+    label: Key
+    placeholder: e.g. hostname
+  operator:
+    label: Operator
+  values:
+    label: Values
+    placeholder: Comma-separated, e.g. node1,node2
 
 formIngress:
   hostMode:
@@ -3181,6 +3307,31 @@ formEngineOpts:
     addActionLabel: Add Registry Mirror
     valueLabel: Mirror URL
     valuePlaceholder: e.g. https://my-mirror.example.com:5000
+
+formResourceQuota:
+  addQuotaLabel: Add Quota
+  table:
+    type:
+      label: Resource Type
+    value:
+      label: Limit
+      placeholder: e.g. 8
+      memoryPlaceholder: e.g. 2Gi
+    noData: There are no resource quotas defined
+  resources:
+    configMaps: Config Maps
+    limitsCpu: CPU Limit
+    limitsMemory: Memory Limit
+    persistentVolumeClaims: Persistent Volume Claims
+    pods: Pods
+    replicationControllers: Replication Controllers
+    requestsCpu: CPU Reservation
+    requestsMemory: Memory Reservation
+    requestsStorage: Storage Reservation
+    secrets: Secrets
+    services: Services
+    servicesLoadBalancers: Services Load Balancers
+    servicesNodePorts: Services Node Ports
 
 formEnvVar:
   title: Environment Variables
@@ -4092,11 +4243,13 @@ loginGithub:
 loginAzure:
   buttonText: Log In with Azure AD
 
+loginSaml:
+  buttonText: "Log In with {provider}"
+
 loginUserPass:
   local: Use a Local User
   provider: "{kind}"
   userLabel: Username
-  caasLabel: Email
   remember: Remember
   userPlaceholder: e.g. jsmith
   genericLoginLabel: Log In
@@ -4125,7 +4278,7 @@ newCertificate:
     label: Private Key
     required: Private Key is required.
     invalidFormat: Private Key is invalid.
-    placeholder: "Paste in the private key, starting with -----BEGIN RSA PRIVATE KEY-----"
+    placeholder: "Paste in the private key, typically starting with -----BEGIN RSA PRIVATE KEY-----"
   cert:
     label: Certificate
     required: Certificate is required.
@@ -4534,7 +4687,41 @@ nodeDriver:
   templateOptions: "{appName} Template"
   amazoneks:
     access:
-      loading: Loading Instance info from Amazon...
+      next: "Next: Select Service Role"
+      loading: Loading Service Roles from Amazon...
+    role:
+      title: Service Roles
+      detail: Choose the service role that will be used to launch EKS Instances
+      label: Service Role
+      noneSelected: "Rancher created role"
+      help: "You may choose to not select a Service Role and Rancher will create one for you."
+      radio:
+        default: "Standard: Rancher generated service role"
+        custom: "Custom: Choose from your existing service roles"
+      next: "Next: Select VPC & Subnet"
+    vpc:
+      title: VPC & Subnet
+      detail: Choose the VPC for that will be used for EKS Instances
+      next: "Next: Select Subnets"
+      loading: "Loading Subnets..."
+      nextRancherDefault: "Next: Select Instance Options"
+      loadingRancherDefault: "Loading Instance options..."
+      noneSelected: "Rancher created VPC and Subnet"
+      radio:
+        default: "Standard: Rancher generated VPC and Subnet"
+        custom: "Custom: Choose from your existing VPC and Subnets"
+    subnet:
+      title: Subnet
+      next: "Next: Select Security Group"
+      loading: "Loading Security Groups..."
+    securityGroup:
+      title: Security Groups
+      detail: Choose the security groups that will be applied to EKS Instances
+      choose:  Choose one or more existing groups
+      defaultExisting: "Standard: Use the existing <code>{groupName}</code> group"
+      defaultCreate: "Standard: Automatically create a new security group"
+      next: "Next: Set Instance options"
+      loading: Loading Instance options...
   amazonec2:
     access:
       title: 1. Account Access
@@ -5434,6 +5621,7 @@ nav:
     members: Members
     nodes: Nodes
     namespaces: Namespaces
+    quotas: Quotas
     storage:
       tab: Storage
       classes: Storage Classes
@@ -5598,13 +5786,15 @@ validation:
       startDot: '"{key}" cannot start with a dot'
       empty: '"{key}" must be at least one character'
       tooLong: '"{key}" cannot be longer than {max} characters'
-      startHyphen: '"{key}" must start with a letter or number'
-      endHyphen: '"{key}" must end with a letter or number'
-      emptyLabel: '"{key}" cannot have two consecutive dots'
-      tooLongLabel: '"{key}" cannot have a section longer than {max} characters'
+      startNumber: '"{key}" cannot start with a number'
+      startHyphen: '"{key}" cannot start with a hyphen'
+      endHyphen: '"{key}" cannot end with a hyphen'
+      emptyLabel: '"{key}" cannot contain two consecutive dots'
+      tooLongLabel: '"{key}" cannot contain a section longer than {max} characters'
     label:
-      startHyphen: '"{key}" must start with a letter or number'
-      endHyphen: '"{key}" must end with a letter or number'
+      startNumber: '"{key}" cannot start with a number'
+      startHyphen: '"{key}" cannot start with a hyphen'
+      endHyphen: '"{key}" cannot end with a hyphen'
       emptyLabel: '"{key}" cannot be empty'
       tooLongLabel: '"{key}" cannot be more than {max} characters'
   k8s:

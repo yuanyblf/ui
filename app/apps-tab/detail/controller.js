@@ -2,6 +2,7 @@ import Controller from '@ember/controller';
 import { inject as service } from '@ember/service';
 import { computed } from '@ember/object';
 import { searchFields as containerSearchFields } from 'ui/components/pod-dots/component';
+import { headers as configMapsHeaders } from 'ui/authenticated/project/config-maps/index/controller';
 
 const podsHeaders = [
   {
@@ -175,8 +176,10 @@ export default Controller.extend({
   servicesHeaders,
   volumesHeaders,
   secretsHeaders,
+  configMapsHeaders,
   ingressSearchText:    '',
   secretsSearchText:    '',
+  configMapsSearchText: '',
   podsHeaders,
   podsSearchText:       '',
   servicesSearchText:   '',
@@ -187,38 +190,28 @@ export default Controller.extend({
   expandedInstances:    null,
 
   init() {
-
     this._super(...arguments);
     this.set('expandedInstances', []);
+  },
 
+  actions: {
+    toggleExpand(instId) {
+      let list = this.get('expandedInstances');
+
+      if ( list.includes(instId) ) {
+        list.removeObject(instId);
+      } else {
+        list.addObject(instId);
+      }
+    },
   },
 
   workloadsAndPods: computed('model.app.workloads', 'model.app.pods', function() {
-
     let out = [];
 
     out = this.get('model.app.pods').filter((obj) => !obj.get('workloadId'));
     out.pushObjects(this.get('model.app.workloads').slice());
 
     return out;
-
   }),
-  actions: {
-    toggleExpand(instId) {
-
-      let list = this.get('expandedInstances');
-
-      if ( list.includes(instId) ) {
-
-        list.removeObject(instId);
-
-      } else {
-
-        list.addObject(instId);
-
-      }
-
-    },
-  },
-
 });

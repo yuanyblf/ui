@@ -1,6 +1,4 @@
-import {
-  getProjectId, getClusterId, bulkAdd
-} from 'ui/utils/navigation-tree';
+import { getProjectId, getClusterId, bulkAdd } from 'ui/utils/navigation-tree';
 
 const rootNav = [
   // Project
@@ -179,6 +177,15 @@ const rootNav = [
     resourceScope:  'global',
     ctx:            [getClusterId],
   },
+  // {
+  //   scope:          'cluster',
+  //   id:             'cluster-quota-templates',
+  //   localizedLabel: 'nav.cluster.quotas',
+  //   route:          'authenticated.cluster.quotas.index',
+  //   resource:       ['resourcequotatemplate'],
+  //   resourceScope:  'global',
+  //   ctx:            [getClusterId],
+  // },
   {
     scope:          'cluster',
     id:             'cluster-tools',
@@ -295,11 +302,9 @@ const rootNav = [
         icon:           'icon icon-users',
         route:          'global-admin.security.authentication',
         condition() {
-
           const authConfigs = this.get('globalStore').all('authConfig');
 
           return authConfigs.get('length') > 0;
-
         }
       },
     ],
@@ -314,9 +319,7 @@ const rootNav = [
 ]
 
 export function initialize(/* appInstance*/) {
-
   bulkAdd(rootNav);
-
 }
 
 export default {

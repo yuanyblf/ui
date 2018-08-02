@@ -1,6 +1,4 @@
-import {
-  computed, observer, get, set
-} from '@ember/object';
+import { computed, observer, get, set } from '@ember/object';
 import { not } from '@ember/object/computed';
 import Component from '@ember/component';
 import layout from './template';
@@ -8,9 +6,7 @@ import layout from './template';
 const HISTORY_LIMIT = 10;
 
 function getDefaultConfig(config) {
-
   switch ( config ) {
-
   case 'deployment':
     return {
       type:                 'deploymentConfig',
@@ -43,9 +39,7 @@ function getDefaultConfig(config) {
     };
   case 'job':
     return { type: 'jobConfig' };
-
   }
-
 }
 
 export default Component.extend({
@@ -53,7 +47,7 @@ export default Component.extend({
   initialScale:     null,
   isUpgrade:        null,
   isGlobal:         null,
-  min:              1,
+  min:              0,
   max:              1000,
   scaleMode:        null,
   editing:          true,
@@ -62,95 +56,74 @@ export default Component.extend({
 
   canChangeScaleMode: not('isUpgrade'),
 
-  canAdvanced: computed('advancedShown', 'isUpgrade', 'scaleMode', function() {
+  init() {
+    this._super(...arguments);
 
-    if ( get(this, 'advancedShown') ) {
+    let initial = get(this, 'initialScale');
 
-      return false;
-
+    if ( initial === null ) {
+      initial = 1;
     }
 
-    if ( get(this, 'isUpgrade') ) {
-
-      return false;
-
+    set(this, 'userInput', `${ initial }`);
+    this.scaleModeChanged();
+    if ( get(this, 'scaleMode') !== 'deployment' && !get(this, 'isUpgrade') ) {
+      set(this, 'advancedShown', true);
     }
+  },
 
-    return true;
+  actions: {
+    increase() {
+      set(this, 'userInput', Math.min(get(this, 'max'), get(this, 'asInteger') + 1));
+    },
 
-  }),
+    decrease() {
+      set(this, 'userInput', Math.max(get(this, 'min'), get(this, 'asInteger') - 1));
+    },
 
-  asInteger: computed('userInput', function() {
+    showAdvanced() {
+      this.set('advancedShown', true);
+    },
+  },
 
-    return parseInt(get(this, 'userInput'), 10) || 0;
-
-  }),
-
-  canChangeScale: computed('scaleMode', function() {
-
-    return ['deployment', 'replicaSet', 'daemonSet', 'replicationController', 'statefulSet'].includes(get(this, 'scaleMode'));
-
-  }),
   scaleChanged: observer('asInteger', function() {
-
     let cur = get(this, 'asInteger');
 
     this.sendAction('setScale', cur);
-
   }),
 
   scaleModeChanged: observer('scaleMode', function() {
-
     var scaleMode = get(this, 'scaleMode');
 
     if ( !scaleMode || scaleMode === 'sidekick' ) {
-
       return;
-
     }
 
     const config = `${ scaleMode }Config`;
     const workload = get(this, 'workload');
 
     if ( !get(workload, config) ) {
-
       set(workload, config, get(this, 'store').createRecord(getDefaultConfig(scaleMode)));
-
     }
-
   }),
 
-  init() {
-
-    this._super(...arguments);
-    set(this, 'userInput', `${ get(this, 'initialScale') || 1 }`);
-    this.scaleModeChanged();
-    if ( get(this, 'scaleMode') !== 'deployment' && !get(this, 'isUpgrade') ) {
-
-      set(this, 'advancedShown', true);
-
+  canAdvanced: computed('advancedShown', 'isUpgrade', 'scaleMode', function() {
+    if ( get(this, 'advancedShown') ) {
+      return false;
     }
 
-  },
+    if ( get(this, 'isUpgrade') ) {
+      return false;
+    }
 
-  actions: {
-    increase() {
+    return true;
+  }),
 
-      set(this, 'userInput', Math.min(get(this, 'max'), get(this, 'asInteger') + 1));
+  asInteger: computed('userInput', function() {
+    return parseInt(get(this, 'userInput'), 10) || 0;
+  }),
 
-    },
-
-    decrease() {
-
-      set(this, 'userInput', Math.max(get(this, 'min'), get(this, 'asInteger') - 1));
-
-    },
-
-    showAdvanced() {
-
-      this.set('advancedShown', true);
-
-    },
-  },
-
+  canChangeScale: computed('scaleMode', function() {
+    return ['deployment', 'replicaSet', 'daemonSet', 'replicationController', 'statefulSet'].includes(get(this, 'scaleMode'));
+  }),
 });

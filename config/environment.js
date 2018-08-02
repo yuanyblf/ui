@@ -3,9 +3,6 @@ var pkg  = require('../package.json');
 var fs   = require('fs');
 var YAML = require('yamljs');
 
-var mode = process.env.UI_MODE || 'oss'; // 'caas' or 'oss'
-var signup = process.env.UI_SIGNUP !== 'false'; // set to false to hide signup
-
 // host can be an ip "1.2.3.4" -> https://1.2.3.4:30443
 // or a URL+port
 function normalizeHost(host,defaultPort) {
@@ -90,9 +87,6 @@ module.exports = function(environment) {
       // when it is created
       version: pkg.version,
       appName: 'Rancher',
-      mode: mode,
-      isCaas: mode === 'caas',
-      caasSignup: signup,
       environment: environment,
       baseAssets: '/',
 
@@ -110,9 +104,7 @@ module.exports = function(environment) {
       projectSubscribeEndpoint: '/v3/projects/%PROJECTID%/subscribe',
       magicEndpoint: '/r',
 
-      // @TODO-2.0
       telemetryEndpoint: '/v1-telemetry',
-      webhookEndpoint: '/v1-webhooks',
       kubernetesBase: '/k8s',
       kubectlEndpoint: '/r/projects/%PROJECTID%/kubectld:8091/v1-kubectl',
       kubernetesDashboard: '/k8s/clusters/%CLUSTERID%/api/v1/namespaces/kube-system/services/kubernetes-dashboard/proxy/',

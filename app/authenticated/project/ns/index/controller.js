@@ -19,6 +19,12 @@ export const headers = [
     translationKey: 'namespacesPage.table.name.label',
   },
   {
+    name:           'resourceQuotaTemplate.displayName',
+    sort:           ['resourceQuotaTemplate.displayName'],
+    searchField:    ['resourceQuotaTemplate.displayName'],
+    translationKey: 'projectsPage.quota.label',
+  },
+  {
     name:           'created',
     sort:           ['created', 'id'],
     searchField:    'created',
@@ -35,30 +41,8 @@ export default Controller.extend({
   sortBy:  'name',
   headers,
 
-  allNamespace: computed('model.namespaces.[]', function() {
-
-    let ns = get(this, 'model.namespaces');
-    let pId = get(this, 'scope.currentProject.id');
-
-    return ns.filter( (n) => get(n, 'projectId') === pId || isEmpty(get(n, 'projectId')));
-
-  }),
-
-  projectNamespaces: computed('model.namespaces', function() {
-
-    return get(this, 'model.namespaces').filter( (ns) => get(ns, 'projectId') === get(this, 'scope.currentProject.id'));
-
-  }),
-
-  projectlessNamespaces: computed('model.namespaces', function() {
-
-    return get(this, 'model.namespaces').filter( (ns) => isEmpty(get(ns, 'projectId')) );
-
-  }),
-
   actions: {
     newNs() {
-
       get(this, 'session').set(C.SESSION.BACK_TO, window.location.href);
       get(this, 'router').transitionTo('authenticated.cluster.projects.new-ns', get(this, 'scope.currentCluster.id'), {
         queryParams: {
@@ -66,8 +50,22 @@ export default Controller.extend({
           from:  'project'
         }
       } );
-
     },
   },
+
+  allNamespace: computed('model.namespaces.[]', function() {
+    let ns = get(this, 'model.namespaces');
+    let pId = get(this, 'scope.currentProject.id');
+
+    return ns.filter( (n) => get(n, 'projectId') === pId || isEmpty(get(n, 'projectId')));
+  }),
+
+  projectNamespaces: computed('model.namespaces', function() {
+    return get(this, 'model.namespaces').filter( (ns) => get(ns, 'projectId') === get(this, 'scope.currentProject.id'));
+  }),
+
+  projectlessNamespaces: computed('model.namespaces', function() {
+    return get(this, 'model.namespaces').filter( (ns) => isEmpty(get(ns, 'projectId')) );
+  }),
 
 });

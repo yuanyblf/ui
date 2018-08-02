@@ -7,8 +7,8 @@ export default Component.extend({
   layout,
   tagName:           'div',
 
-  classNames:        ['catalog-box', 'box', 'p-0'],
-  classNameBindings: ['active::inactive'],
+  classNames:        ['catalog-box', 'p-0'],
+  classNameBindings: ['active::inactive', 'model.certifiedClass'],
 
   model:             null,
   showIcon:          true,
@@ -18,20 +18,14 @@ export default Component.extend({
   srcSet:            false,
 
   didRender() {
-
     if (!this.get('srcSet')) {
-
       this.set('srcSet', true);
       var $icon = this.$('.catalog-icon > img');
 
       $icon.attr('src', $icon.data('src'));
       this.$('img').on('error', () => {
-
         $icon.attr('src', `${ this.get('app.baseAssets') }assets/images/generic-catalog.svg`);
-
       });
-
     }
-
   }
 });

@@ -15,14 +15,15 @@
   {{/if}}
 {{else}}
   {{form-name-description
+      nameDisabled=isEdit
+      nameRequired=(not isEdit)
       model=primaryResource
-      nameRequired=true
       namePlaceholder="newSecret.name.placeholder"
       descriptionPlaceholder="newSecret.description.placeholder"
   }}
 {{/if}}
 
-{{optionally-namespaced namespaceErrors=namespaceErrors scope=scope mode=mode namespace=namespace model=model}}
+{{optionally-namespaced isClone=isClone namespaceErrors=namespaceErrors scope=scope mode=mode namespace=namespace model=model}}
 
 <div class="row">
   <div class="col span-6 mt-0">

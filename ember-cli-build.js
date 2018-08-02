@@ -3,21 +3,16 @@ const EmberApp = require('ember-cli/lib/broccoli/ember-app');
 const env      = EmberApp.env();
 
 module.exports = function(defaults) {
-
   // Pull in a few useful environment settings for index.html to use
   var appConfig = require('./config/environment')(env).APP;
   var inline    = {};
 
   ['version', 'appName', 'baseAssets'].forEach((key) => {
-
     var val = appConfig[key];
 
     if (val) {
-
       inline[key] = { content: val };
-
     }
-
   });
 
   var app = new EmberApp(defaults, {
@@ -89,7 +84,8 @@ module.exports = function(defaults) {
   app.import('node_modules/prismjs/components/prism-bash.js');
   app.import('node_modules/prismjs/components/prism-yaml.js');
 
-  app.import('vendor/aws-sdk-ec2.js');
+  // app.import('vendor/aws-sdk-ec2.js');
+  app.import('vendor/aws-sdk-ec2-iam-2.279.1.min.js');
   app.import('vendor/ember-shortcuts.js');
   app.import('vendor/file-saver/fileSaver.mini.js');
   app.import('vendor/icons/fonts/rancher-icons.svg',   { destDir: 'assets/fonts/' });
@@ -104,5 +100,4 @@ module.exports = function(defaults) {
   app.import('vendor/aliyun-sdk.js');
 
   return app.toTree();
-
 };

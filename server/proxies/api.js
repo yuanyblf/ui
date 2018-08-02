@@ -32,10 +32,7 @@ module.exports = function(app, options) {
     'Global':  config.apiEndpoint,
     'Public':  config.publicApiEndpoint,
     'Magic': config.magicEndpoint,
-
-    // @TODO-2.0
     'Telemetry': config.telemetryEndpoint,
-    'WebHook': config.webhookEndpoint,
 
     'K8s': '/k8s',
     'Meta': '/meta',
@@ -43,10 +40,24 @@ module.exports = function(app, options) {
     'Version': '/version',
   }
 
+  app.use('/', function(req, res, next) {
+    if ( (req.headers['user-agent']||'').toLowerCase().includes('mozilla') ) {
+      next();
+    } else {
+      proxyLog('Root', req);
+      req.headers['X-Forwarded-Proto'] = req.protocol;
+      proxy.web(req, res);
+    }
+  }),
+
   console.log('Proxying APIs to', target);
   Object.keys(map).forEach(function(label) {
     let base = map[label];
     app.use(base, function(req, res, next) {
+      if ( req.url === '/' ) {
+        req.url = '';
+      }
+
       // include root path in proxied request
       req.url = path.join(base, req.url);
       req.headers['X-Forwarded-Proto'] = req.protocol;
